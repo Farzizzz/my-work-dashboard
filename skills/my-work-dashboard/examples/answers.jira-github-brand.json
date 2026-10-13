@@ -1,0 +1,4 @@
+{ "owner": { "name": "Priya Shah", "title": "Priya's dashboard", "subtitle": "Engineering" }, "timezone": "Asia/Kolkata",
+  "sources": { "jira": { "enabled": true, "site": "https://acme.atlassian.net/jira/software", "projectWork": { "projects": "ENG, OPS" } },
+               "github": { "enabled": true } },
+  "theme": { "colors": { "primary": "#ffcc00", "head1": "#ffe680" }, "mode": "auto", "logo": { "type": "url", "value": "https://example.com/logo.png" } } }

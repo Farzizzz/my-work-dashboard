@@ -1,0 +1,18 @@
+{
+  "owner": { "name": "Alex Morgan", "title": "My Work", "subtitle": "Alex Morgan · Platform team" },
+  "timezone": "Europe/London", "workHours": { "start": 9, "end": 17 }, "refreshHour": 7,
+  "sources": {
+    "jira": {
+      "enabled": true, "site": "yourcompany.atlassian.net", "myJql": "assignee = currentUser()",
+      "serviceDesk": { "projects": ["HELP"], "sla": { "ttfr": "Time to first response", "ttr": "Time to resolution" },
+                       "slaTargets": { "High": { "ttfr": "30m", "ttr": "4h" } }, "autoResolvedTypes": [], "teamShare": true },
+      "projectWork": { "projects": ["PLAT"], "okrLabels": ["OKR"], "doneLog": true },
+      "involved": { "enabled": true, "days": 14 }
+    },
+    "slack": { "enabled": true, "channels": [{ "id": "C0123ABCD", "name": "#it-help" }] },
+    "github": { "enabled": true, "orgs": ["yourorg"] },
+    "gmail": { "enabled": true }, "gcal": { "enabled": true },
+    "custom": [{ "id": "zendesk", "name": "Zendesk", "secrets": ["ZENDESK_EMAIL", "ZENDESK_TOKEN"] }]
+  },
+  "theme": { "preset": "ocean", "mode": "auto", "logo": { "type": "monogram" } }
+}

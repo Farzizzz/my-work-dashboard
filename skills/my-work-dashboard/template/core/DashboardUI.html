@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<!-- Author: Farz Owasil (my-work-dashboard template) · all colours come from the theme tokens below -->
+<title><?= titleText ?></title>
+<style><?!= themeCss ?></style>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:var(--primary-ink)}
+  .page{max-width:1080px;margin:0 auto;background:var(--surface);min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,.06)}
+  .band{background:linear-gradient(120deg,var(--head2),var(--head1));color:var(--on-head);padding:26px 40px 30px;display:flex;align-items:center;gap:22px}
+  .logo{flex:0 0 auto;display:flex;align-items:center}.logo img,.logo svg{display:block;max-height:64px;max-width:160px;width:auto;height:auto}
+  .logo.boxed{background:#fff;border-radius:14px;padding:10px 14px}
+  .band h1{margin:0;font-size:27px;font-weight:750;letter-spacing:.2px}
+  .band .sub{margin-top:5px;color:var(--on-head-muted);font-size:14.5px}
+  .grad{height:6px;background:linear-gradient(90deg,var(--accent1),var(--accent2) 45%,var(--primary) 78%,var(--head1))}
+  .snapbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 40px;background:var(--surface2);border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+  .snapbar select{border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:13px;font-weight:650;color:var(--ink);background:var(--surface)}
+  .snapbar .upd{margin-left:auto}
+  .btn{background:var(--primary);border:none;color:var(--on-primary);border-radius:8px;padding:7px 14px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .btn.ghost{background:var(--surface);color:var(--muted);border:1px solid var(--line)}
+  .maintabs{display:flex;gap:2px;background:var(--surface2);padding:0 40px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .mtab{background:none;border:none;border-bottom:3px solid transparent;color:var(--muted);padding:14px 18px;font-size:14.5px;font-weight:680;cursor:pointer;margin-bottom:-1px}
+  .mtab:hover{color:var(--ink)}.mtab.on{color:var(--primary-ink);border-bottom-color:var(--primary)}
+  .body{padding:30px 40px 20px}
+  .mark{width:38px;height:5px;border-radius:3px;background:var(--primary);margin:0 0 10px}
+  h2{font-size:20px;margin:0 0 3px;font-weight:730}
+  .lead{color:var(--muted);font-size:14px;margin:0 0 20px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:26px}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:15px 16px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+  .stat .n{font-size:26px;font-weight:760;letter-spacing:-.5px;line-height:1.1}
+  .stat .l{color:var(--muted);font-size:12.5px;margin-top:5px}.stat .h{color:var(--faint);font-size:11.5px;margin-top:6px;min-height:13px}
+  .t-primary{color:var(--primary)}.t-a1{color:var(--accent1)}.t-a2{color:var(--accent2)}.t-a3{color:var(--accent3)}.t-good{color:var(--good)}.t-warn{color:var(--warn)}.t-bad{color:var(--bad)}
+  .up{color:var(--good)}.down{color:var(--warn)}.flat{color:var(--faint)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:4px}
+  th{text-align:left;color:var(--muted);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.5px;padding:8px 10px;border-bottom:2px solid var(--line)}
+  td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}tr:last-child td{border-bottom:none}
+  tbody tr:nth-child(even){background:var(--surface2)}
+  .plat{font-weight:700}.num{font-variant-numeric:tabular-nums;text-align:right}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+  .tscroll{overflow-x:auto}
+  .note{background:var(--surface2);border-left:3px solid var(--primary);border-radius:6px;padding:10px 14px;font-size:12.5px;color:var(--muted);margin-top:10px}
+  .err{background:color-mix(in srgb,var(--bad) 12%,var(--surface));border-left:3px solid var(--bad);border-radius:6px;padding:10px 14px;font-size:12.5px;color:var(--ink);margin:0 0 16px}
+  .kv{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13.5px}.kv:last-child{border:none}.kv b{font-variant-numeric:tabular-nums;text-align:right}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:720px){.grid2{grid-template-columns:1fr}}
+  .rangesel{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-bottom:18px}
+  .rangesel button{background:var(--surface);border:none;border-right:1px solid var(--line);color:var(--muted);padding:8px 16px;font-size:13px;font-weight:680;cursor:pointer}
+  .rangesel button:last-child{border-right:none}.rangesel button:hover{color:var(--ink)}.rangesel button.on{background:var(--primary);color:var(--on-primary)}
+  .rangecap{color:var(--faint);font-size:12px;margin:-10px 0 18px}
+  .qtabs{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 20px}
+  .qtab{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:9px;padding:8px 14px;font-size:13px;font-weight:650;cursor:pointer;display:flex;flex-direction:column;line-height:1.2}
+  .qtab small{font-weight:600;font-size:10px;margin-top:2px;opacity:.8}.qtab.on{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px}
+  .key{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--primary-ink);text-decoration:none;font-weight:600;background:color-mix(in srgb,var(--primary) 12%,var(--surface));padding:2px 7px;border-radius:5px;white-space:nowrap}
+  .otype{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700}
+  .pill{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap;background:var(--surface2);color:var(--muted)}
+  .pill.ip{background:color-mix(in srgb,var(--primary) 14%,var(--surface));color:var(--primary-ink)}
+  .pill.done{background:color-mix(in srgb,var(--good) 16%,var(--surface));color:var(--ink)}
+  .pill.cancel{background:color-mix(in srgb,var(--bad) 14%,var(--surface));color:var(--ink)}
+  .flag{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 7px;border-radius:5px;margin-left:6px;background:color-mix(in srgb,var(--warn) 18%,var(--surface));color:var(--ink)}
+  .track{flex:1;height:8px;background:var(--surface2);border:1px solid var(--line);border-radius:6px;overflow:hidden}.track i{display:block;height:100%;background:var(--primary)}
+  .track i.full{background:var(--good)}
+  .obj{padding:14px 0;border-bottom:1px dashed var(--line)}.obj:last-child{border-bottom:none}
+  .otop{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.otitle{font-size:14.5px;font-weight:640;flex:1 1 240px}
+  .prog{display:flex;align-items:center;gap:10px;margin-top:9px}.pctxt{width:110px;text-align:right;font-size:12.5px;color:var(--muted)}
+  .krs{margin:10px 0 0;padding:0;list-style:none}.krs li{display:flex;align-items:baseline;gap:9px;padding:6px 0 6px 14px;border-left:2px solid var(--line);font-size:13px}.krs .krt{flex:1}
+  .soonbox{border:1.5px dashed var(--line);border-radius:14px;padding:36px 24px;text-align:center;color:var(--muted);background:var(--surface2)}
+  .dsearch{border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:13.5px;min-width:200px;flex:1;max-width:360px;background:var(--surface);color:var(--ink)}
+  .month{font-size:13px;font-weight:730;color:var(--primary-ink);text-transform:uppercase;letter-spacing:.6px;margin:20px 0 6px;display:flex;gap:8px;align-items:baseline}
+  .month span{color:var(--faint);font-weight:650;font-size:11.5px;text-transform:none;letter-spacing:0}
+  .ditem{display:flex;gap:10px;align-items:baseline;padding:9px 4px;border-bottom:1px dashed var(--line);flex-wrap:wrap}.ditem:last-child{border-bottom:none}
+  .ditem .dt{flex:1 1 260px;font-size:14px}.ditem .dp{color:var(--muted);font-size:12px;width:100%}.ditem .dd{color:var(--faint);font-size:12px}
+  .ditem.x .dt{color:var(--faint);text-decoration:line-through}
+  footer{padding:18px 40px 30px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:12px}
+  @media(max-width:680px){.band,.maintabs,.body,footer,.snapbar{padding-left:16px;padding-right:16px}.band{flex-direction:column;align-items:flex-start}.mtab{padding:12px 12px}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="band"><div class="logo" id="logo"><?!= logoHtml ?></div><div><h1 id="title"></h1><div class="sub" id="subtitle"></div></div></div>
+  <div class="grad"></div>
+  <div class="snapbar">
+    <label for="snap"><strong>Viewing:</strong></label>
+    <select id="snap"></select>
+    <span class="upd">Data as of <b id="upd"></b></span>
+    <button class="btn ghost" id="themebtn" title="Switch light / dark">◐</button>
+    <button class="btn" onclick="downloadHTML()">⬇ Download</button>
+  </div>
+  <div class="maintabs" id="maintabs"></div>
+  <div class="body" id="mainview"></div>
+  <footer><span id="foot-l"></span><span>Private to you · refreshes daily · made by <a href="https://github.com/Farzizzz" target="_blank" rel="noopener">Farzizzz</a></span></footer>
+</div>
+
+<script id="dash-data" type="application/json"><?!= dataJson ?></script>
+<script id="dash-history" type="application/json"><?!= historyJson ?></script>
+<script id="dash-brand" type="application/json"><?!= brandJson ?></script>
+
+<script>
+  var CURRENT = JSON.parse(document.getElementById('dash-data').textContent || '{}');
+  var HISTORY = JSON.parse(document.getElementById('dash-history').textContent || '[]');
+  var BRAND = JSON.parse(document.getElementById('dash-brand').textContent || '{}');
+  var MODELS = { 'live': CURRENT }; if (CURRENT.date) MODELS[CURRENT.date] = CURRENT;
+  var DATA = CURRENT, RANGE = String(CURRENT.defaultRange || '14'), CURTAB = 'overview';
+  var JIRA = BRAND.jiraBrowse || '';
+  var esc = function(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); };
+  var safeUrl = function(u){ u=String(u||''); return /^https:\/\//i.test(u)?esc(u):'#'; };
+  var get = function(path){ return path.split('.').reduce(function(o,k){ return o==null?undefined:o[k]; }, DATA); };
+  var pct = function(n,d){ return d?Math.round(n/d*100):0; };
+  var pillClass = function(s){ s=String(s||'').toLowerCase(); if(/done|closed|resolved|complete/.test(s)) return 'done'; if(/cancel|won.?t|declin|reject|duplicate/.test(s)) return 'cancel'; if(/progress|review|doing|active/.test(s)) return 'ip'; return ''; };
+  var keyLink = function(k){ return JIRA ? '<a class="key" href="'+safeUrl(JIRA+k)+'" target="_blank" rel="noopener">'+esc(k)+'</a>' : '<span class="key">'+esc(k)+'</span>'; };
+  var ext = function(url,text){ return '<a href="'+safeUrl(url)+'" target="_blank" rel="noopener">'+esc(text)+'</a>'; };
+  function dlt(cur,prev,goodUp){ if(prev==null||cur==null) return ''; var d=cur-prev; if(!d) return '<span class="flat">no change vs prev '+RANGE+'d</span>'; var up=d>0; var cls=(goodUp==null)?'flat':((up==goodUp)?'up':'down'); return '<span class="'+cls+'">'+(up?'▲':'▼')+' '+Math.abs(d)+' vs prev '+RANGE+'d</span>'; }
+  function pv(m,t){ return t?Math.round(m/t*100):null; }
+  function dltPct(cm,ct,pm,pt){ var c=pv(cm,ct),p=pv(pm,pt); if(c==null||p==null) return ''; var d=c-p; if(!d) return '<span class="flat">no change vs prev</span>'; return '<span class="'+(d>0?'up':'down')+'">'+(d>0?'▲':'▼')+' '+Math.abs(d)+'pp vs prev</span>'; }
+  function deltaTd(diff,suffix){ if(diff==null||diff===0) return '<td class="num flat">–</td>'; return '<td class="num '+(diff>0?'up':'down')+'" style="font-weight:700">'+(diff>0?'▲':'▼')+' '+Math.abs(diff)+(suffix||'')+'</td>'; }
+  function slaCell(m,t){ if(t==null||!t) return '<span class="flat">n/a</span>'; if(t<5) return m+' / '+t; return Math.round(m/t*100)+'% ('+m+'/'+t+')'; }
+  function slaPct(m,t){ if(!t) return 'n/a'; if(t<5) return m+'/'+t; return Math.round(m/t*100)+'%'; }
+  function stat(n,l,h,tone){ return '<div class="stat"><div class="n t-'+(tone||'primary')+'">'+n+'</div><div class="l">'+l+'</div><div class="h">'+(h||'')+'</div></div>'; }
+  function empty(msg){ return '<div class="note">'+msg+'</div>'; }
+  function head(title,lead){ return '<div class="mark"></div><h2>'+title+'</h2>'+(lead?'<p class="lead">'+lead+'</p>':''); }
+  function sub(title,lead){ return '<div class="mark" style="margin-top:20px"></div><h2 style="font-size:16px;margin-bottom:'+(lead?'2':'10')+'px">'+title+'</h2>'+(lead?'<p class="lead">'+lead+'</p>':''); }
+  function tableP(cols,rows,foot){ return rows?'<div class="panel tscroll" style="padding:6px 12px 12px"><table><thead><tr>'+cols.map(function(c){ return '<th'+(c.charAt(0)==='#'?' class="num">'+c.slice(1):'>'+c)+'</th>'; }).join('')+'</tr></thead><tbody>'+rows+'</tbody></table>'+(foot?'<div style="font-size:11.5px;color:var(--faint);padding:6px 4px 2px">'+foot+'</div>':'')+'</div>':''; }
+  function errBox(labels){ var e=DATA.errors||{}; var hit=labels.filter(function(n){return e[n];}); return hit.length?'<div class="err"><b>Couldn\'t refresh:</b> '+hit.map(function(n){return esc(n)+' - '+esc(e[n]);}).join('<br>')+'</div>':''; }
+  function rangeSelector(cap){ var rs=(DATA.ranges||[14,30,60]).map(String); return '<div class="rangesel" id="rangesel">'+rs.map(function(r){return '<button class="'+(r===RANGE?'on':'')+'" data-r="'+r+'">'+r+' days</button>';}).join('')+'</div>'+(cap?'<div class="rangecap">'+cap+'</div>':''); }
+  function bindRange(id){ var el=document.getElementById('rangesel'); if(el) el.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ RANGE=b.dataset.r; showTab(id); }; }); }
+  function enabled(path){ return (DATA.sections||[]).some(function(s){ return s.path===path; }) || get(path)!=null; }
+  function labelsFor(prefix){ return (DATA.sections||[]).filter(function(s){ return s.path===prefix||s.path.indexOf(prefix+'.')===0; }).map(function(s){ return s.label; }); }
+  function doneInRange(days){ var d=get('jira.done'); if(!d) return null; var cut=new Date(Date.now()-days*86400000).toISOString().slice(0,10); return (d.items||[]).filter(function(i){ return !i.cancelled && i.date>=cut; }).length; }
+
+  // ---------------- Overview ----------------
+  function renderOverview(){
+    var cards=[], h=get('jira.helpdesk'), r=h&&h.byRange?h.byRange[RANGE]:null, p=(r&&r.prev)||{};
+    if(r){ cards.push(stat((r.closed||0).toLocaleString(),'Tickets I resolved',dlt(r.closed,p.closed,true),'a2'));
+      if(h.teamShare&&r.teamClosed!=null) cards.push(stat(pct(r.closedHuman,r.teamClosed)+'%','Share of team resolved',(r.closedHuman||0)+' of '+r.teamClosed+(p.teamClosed?' · prev '+pct(p.closedHuman,p.teamClosed)+'%':''),'primary'));
+      if(h.hasSla&&r.ttrTot!=null) cards.push(stat(slaPct(r.ttrMet,r.ttrTot),'My time-to-resolve SLA met',dltPct(r.ttrMet,r.ttrTot,p.ttrMet,p.ttrTot),'good')); }
+    var q=get('jira.queue'); if(q) cards.push(stat(q.open,'Open in my queue',(q.waiting||0)+' waiting on customer','a1'));
+    var pr=get('jira.projects'); if(pr) cards.push(stat(pr.inflightCount,'Projects work in flight','not done yet','a3'));
+    var dn=doneInRange(+RANGE); if(dn!=null) cards.push(stat(dn,'Things I finished','last '+RANGE+' days','good'));
+    var gh=get('github'), gr=gh&&gh.byRange?gh.byRange[RANGE]:null;
+    if(gr){ cards.push(stat(gr.merged,'PRs merged',dlt(gr.merged,gr.prev.merged,true),'a2')); cards.push(stat(gr.reviewed,'PRs I reviewed',dlt(gr.reviewed,gr.prev.reviewed,true),'primary')); cards.push(stat((gh.awaitingReview||[]).length,'Waiting on my review','open PRs','warn')); }
+    var s=get('slack'); if(s) cards.push(stat(s.myThreads,'Support threads I answered',s.mySharePct+'% of human-answered · '+s.windowDays+'d','a3'));
+    var m=get('mail'); if(m){ var sr=(m.sent||{})[RANGE]||{}; cards.push(stat(m.awaitingCount,'Emails awaiting my reply','last '+m.awaitingDays+' days','warn')); cards.push(stat(sr.cur!=null?sr.cur:'–','Emails sent',dlt(sr.cur,sr.prev,null),'primary')); }
+    var c=get('calendar'); if(c&&c.thisWeek) cards.push(stat(c.thisWeek.meetings,'Meetings this week',c.thisWeek.meetingHours+'h · '+c.thisWeek.loadPct+'% of the week','a1'));
+    Object.keys(get('custom')||{}).forEach(function(id){ (DATA.custom[id].headline||[]).slice(0,2).forEach(function(x){ cards.push(stat(esc(x.value),esc(x.label),esc(x.hint||''),x.tone||'primary')); }); });
+    var ranged=!!(r||gr||m||dn!=null);
+    return errBox(Object.keys(DATA.errors||{}))+head('Overview','Your work at a glance.'+(ranged?' Figures marked with a range follow the selector, with change vs the previous window.':''))
+      + (ranged?rangeSelector():'')
+      + (cards.length?'<div class="stats">'+cards.join('')+'</div>':empty('No sources have reported yet. Run <b>My Dashboard ▸ Refresh now</b> in the Sheet.'))
+      + (r?sub('My tickets by priority','Created in the last '+RANGE+' days and assigned to me.')+priorityTable(r):'');
+  }
+
+  // ---------------- Jira ----------------
+  function priorityTable(r){
+    var prevP={}; ((r.prev&&r.prev.priorities)||[]).forEach(function(x){ prevP[x.p]=x; });
+    var tl=0,tc=0,ptl=0,ptc=0;
+    var rows=(r.priorities||[]).filter(function(x){ return x.logged||(prevP[x.p]||{}).logged; }).map(function(x){ var pp=prevP[x.p]||{}; tl+=x.logged;tc+=x.closed;ptl+=(pp.logged||0);ptc+=(pp.closed||0);
+      return '<tr><td class="plat">'+esc(x.p)+'</td><td class="num">'+x.logged+'</td>'+deltaTd(x.logged-(pp.logged||0))+'<td class="num">'+x.closed+'</td>'+deltaTd(x.closed-(pp.closed||0))+'<td class="num">'+(x.logged-x.closed)+'</td><td class="num">'+(x.logged?Math.round(x.closed/x.logged*100)+'%':'–')+'</td></tr>'; }).join('');
+    if(!rows) return empty('No tickets in this window.');
+    rows+='<tr style="font-weight:700"><td>Total</td><td class="num">'+tl+'</td>'+deltaTd(tl-ptl)+'<td class="num">'+tc+'</td>'+deltaTd(tc-ptc)+'<td class="num">'+(tl-tc)+'</td><td class="num">'+(tl?Math.round(tc/tl*100)+'%':'–')+'</td></tr>';
+    return tableP(['Priority','#Assigned','#Δ','#Closed','#Δ','#Still open','#Closure'],rows,'Δ = change vs the previous '+RANGE+'-day window');
+  }
+  function slaMatrix(r,h){
+    var tg=h.slaTargets||{}, prevP={}; ((r.prev&&r.prev.priorities)||[]).forEach(function(x){ prevP[x.p]=x; });
+    var rows=(r.priorities||[]).filter(function(x){ return x.ttfrTot||x.ttrTot; }).map(function(x){ var pp=prevP[x.p]||{}, t=tg[x.p]||{};
+      return '<tr><td class="plat">'+esc(x.p)+'</td><td class="num">'+esc(t.ttfr||'–')+'</td><td class="num">'+slaCell(x.ttfrMet,x.ttfrTot)+'</td>'+deltaTd(pv(x.ttfrMet,x.ttfrTot)!=null&&pv(pp.ttfrMet,pp.ttfrTot)!=null?pv(x.ttfrMet,x.ttfrTot)-pv(pp.ttfrMet,pp.ttfrTot):null,'pp')
+        +'<td class="num">'+esc(t.ttr||'–')+'</td><td class="num">'+slaCell(x.ttrMet,x.ttrTot)+'</td>'+deltaTd(pv(x.ttrMet,x.ttrTot)!=null&&pv(pp.ttrMet,pp.ttrTot)!=null?pv(x.ttrMet,x.ttrTot)-pv(pp.ttrMet,pp.ttrTot):null,'pp')+'</tr>'; }).join('');
+    return rows?tableP(['Priority','#First response target','#Met','#Δ','#Resolve target','#Met','#Δ'],rows,'Your service desk\'s own SLA timers (met ÷ completed). % shown from 5 tickets up.'):empty('No SLA timers completed in this window.');
+  }
+  function renderService(){
+    var h=get('jira.helpdesk'); if(!h) return errBox(labelsFor('jira.helpdesk'))+empty('No service-desk data yet.');
+    var r=h.byRange[RANGE]||{}, p=r.prev||{};
+    return errBox(labelsFor('jira.helpdesk'))+head('Service desk','Tickets assigned to me.')+rangeSelector()
+      + '<div class="stats">'+stat(r.logged,'Assigned to me',dlt(r.logged,p.logged,null),'primary')+stat(r.closed,'Resolved',dlt(r.closed,p.closed,true),'a2')
+      + (h.hasSla?stat(slaPct(r.ttfrMet,r.ttfrTot),'First response met',dltPct(r.ttfrMet,r.ttfrTot,p.ttfrMet,p.ttfrTot),'good')+stat(slaPct(r.ttrMet,r.ttrTot),'Resolve met',dltPct(r.ttrMet,r.ttrTot,p.ttrMet,p.ttrTot),'good'):'')
+      + stat(r.avgResolveDays!=null?r.avgResolveDays+' d':'–','Avg time to resolve','human-handled','a1')+'</div>'
+      + sub('By priority')+priorityTable(r) + (h.hasSla?sub('SLA by priority')+slaMatrix(r,h):'');
+  }
+  function renderQueue(){
+    var q=get('jira.queue'); if(!q) return errBox(labelsFor('jira.queue'))+empty('No queue data yet.');
+    var kv=function(o){ return Object.keys(o||{}).sort(function(a,b){return o[b]-o[a];}).map(function(k){ return '<div class="kv"><span>'+esc(k)+'</span><b>'+o[k]+'</b></div>'; }).join('')||empty('Nothing open.'); };
+    var rows=(q.oldest||[]).map(function(t){ return '<tr><td>'+keyLink(t.key)+'</td><td>'+esc(t.title)+(t.waiting?'<span class="flag">waiting</span>':'')+(t.idle?'<span class="flag">quiet '+t.idleDays+'d</span>':'')+'</td><td>'+esc(t.p)+'</td><td><span class="pill '+pillClass(t.status)+'">'+esc(t.status)+'</span></td><td class="num">'+t.ageDays+'d</td><td class="num">'+t.idleDays+'d</td></tr>'; }).join('');
+    return errBox(labelsFor('jira.queue'))+head('My queue','Open service-desk tickets assigned to me, oldest first.')
+      + '<div class="stats">'+stat(q.open,'Open','','primary')+stat(q.waiting,'Waiting on customer','','a1')+stat(q.idle,'Gone quiet','no update in '+q.idleDays+'+ days',q.idle?'warn':'good')+'</div>'
+      + '<div class="grid2"><div class="panel"><h2 style="font-size:15px">By priority</h2>'+kv(q.byPriority)+'</div><div class="panel"><h2 style="font-size:15px">By status</h2>'+kv(q.byStatus)+'</div></div>'
+      + sub('Oldest open')+(rows?tableP(['Key','Summary','Priority','Status','#Age','#Idle'],rows):empty('Queue is clear.'));
+  }
+  function renderInvolved(){
+    var v=get('jira.involved'); if(!v) return errBox(labelsFor('jira.involved'))+empty('No data yet.');
+    var rows=(v.items||[]).map(function(t){ return '<tr><td>'+keyLink(t.key)+'</td><td>'+esc(t.title)+'</td><td><span class="otype">'+esc(t.role)+'</span></td><td>'+esc(t.assignee)+'</td><td><span class="pill '+pillClass(t.status)+'">'+esc(t.status)+'</span></td><td class="num">'+esc(t.updated)+'</td></tr>'; }).join('');
+    return errBox(labelsFor('jira.involved'))+head('Involved','Tickets I raised or watch but don\'t own, active in the last '+v.days+' days. Commenting makes you a watcher, so this covers conversations you\'ve joined.')
+      + '<div class="stats">'+stat(v.total,'Active conversations','','primary')+'</div>'+(rows?tableP(['Key','Summary','My role','Assignee','Status','#Updated'],rows):empty('Nothing active.'));
+  }
+  function statusPct(s){ return pillClass(s)==='done'?100:(pillClass(s)==='ip'?50:0); }
+  function objPP(o){ return o.total?{pct:Math.round(o.done/o.total*100),txt:o.done+' / '+o.total}:{pct:statusPct(o.status),txt:'by status'}; }
+  function renderQuarter(q){
+    if(q.state==='soon') return '<div class="soonbox"><b>'+q.label+' · '+q.q+'</b><br>Nothing here yet. OKRs appear once they\'re labelled and dated in this quarter.</div>';
+    var s=q.summary||{};
+    return '<div class="stats">'+stat(s.objectives,'Objectives','','primary')+stat(s.delivered,'Delivered','','good')+stat(s.childPct+'%','Key-result tasks done',s.childDone+'/'+s.childTotal,'a1')+'</div><div class="panel">'
+      + (q.objectives||[]).map(function(o){ var pp=objPP(o); var krs=(o.krs||[]).map(function(k){ return '<li>'+keyLink(k.key)+'<span class="krt">'+esc(k.title)+'</span><span class="pill '+pillClass(k.status)+'">'+esc(k.status)+'</span></li>'; }).join('');
+        return '<div class="obj"><div class="otop">'+keyLink(o.key)+'<span class="otitle">'+esc(o.title)+' <span class="otype">'+esc(o.type)+'</span>'+(o.noDates?' <span class="flag">set start/due dates</span>':'')+'</span><span class="pill '+pillClass(o.status)+'">'+esc(o.status)+'</span></div><div class="prog"><div class="track"><i class="'+(pp.pct>=100?'full':'')+'" style="width:'+pp.pct+'%"></i></div><span class="pctxt">'+pp.pct+'% · '+pp.txt+'</span></div>'+(krs?'<ul class="krs">'+krs+'</ul>':'')+'</div>'; }).join('')+'</div>';
+  }
+  function renderProjects(){
+    var p=get('jira.projects'); if(!p) return errBox(labelsFor('jira.projects'))+empty('No project data yet.');
+    var rows=(p.inflight||[]).map(function(t){ return '<tr><td>'+keyLink(t.key)+'</td><td>'+esc(t.title)+' <span class="otype">'+esc(t.type)+'</span></td><td>'+(t.parent?keyLink(t.parent):'')+'</td><td><span class="pill '+pillClass(t.status)+'">'+esc(t.status)+'</span></td><td class="num">'+esc(t.updated)+'</td></tr>'; }).join('');
+    var okr='';
+    if(p.hasOkrs){ var qs=p.quarters||[], def=qs.reduce(function(a,q,i){ return q.state==='live'?i:a; },0);
+      okr=sub('My OKRs','Bucketed by each objective\'s start and due dates.')+'<div class="qtabs" id="qtabs">'+qs.map(function(q,i){ return '<button class="qtab'+(i===def?' on':'')+'" data-i="'+i+'">'+q.label+' · '+q.q+'<small>'+({past:'completed',live:'current',future:'upcoming',soon:'nothing yet'})[q.state]+'</small></button>'; }).join('')+'</div><div id="qbody">'+(qs.length?renderQuarter(qs[def]):'')+'</div>'; }
+    return errBox(labelsFor('jira.projects'))+head('Projects','Project work assigned to me that isn\'t done yet.')
+      + '<div class="stats">'+stat(p.inflightCount,'In flight','','primary')+'</div>'+okr
+      + sub('In flight'+(p.inflightCount>(p.inflight||[]).length?' (latest '+p.inflight.length+' of '+p.inflightCount+')':''))+(rows?tableP(['Key','Summary','Parent','Status','#Updated'],rows):empty('Nothing in flight.'));
+  }
+  function bindQuarters(){ var t=document.getElementById('qtabs'); if(!t) return; t.querySelectorAll('.qtab').forEach(function(b){ b.onclick=function(){ t.querySelectorAll('.qtab').forEach(function(x){x.classList.remove('on');}); b.classList.add('on'); document.getElementById('qbody').innerHTML=renderQuarter(get('jira.projects').quarters[+b.dataset.i]); }; }); }
+
+  var DONE_Q='', DONE_P='all', DONE_X=false;
+  function doneList(){
+    var d=get('jira.done')||{items:[]}, now=new Date(), cut='';
+    if(DONE_P==='q') cut=new Date(now.getFullYear(),Math.floor(now.getMonth()/3)*3,1).toISOString().slice(0,10); else if(DONE_P!=='all') cut=new Date(now.getTime()-(+DONE_P)*86400000).toISOString().slice(0,10);
+    var q=DONE_Q.toLowerCase(), items=(d.items||[]).filter(function(i){ return (DONE_X||!i.cancelled)&&(!cut||i.date>=cut)&&(!q||(i.key+' '+i.title+' '+(i.parentTitle||'')+' '+i.type).toLowerCase().indexOf(q)>=0); });
+    if(!items.length) return empty('Nothing matches.');
+    var g={}, order=[], MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    items.forEach(function(i){ var m=(i.date||'').slice(0,7)||'–'; if(!g[m]){g[m]=[];order.push(m);} g[m].push(i); });
+    return order.map(function(m){ var lbl=/^\d{4}-\d{2}$/.test(m)?MN[+m.slice(5)-1]+' '+m.slice(0,4):'No date';
+      return '<div class="month">'+lbl+' <span>'+g[m].filter(function(i){return !i.cancelled;}).length+' done</span></div><div class="panel" style="padding:4px 16px">'+g[m].map(function(i){
+        return '<div class="ditem'+(i.cancelled?' x':'')+'">'+keyLink(i.key)+'<span class="dt">'+esc(i.title)+' <span class="otype">'+esc(i.type)+'</span>'+(i.okr?' <span class="pill ip">OKR</span>':'')+(i.cancelled?' <span class="pill cancel">'+esc(i.status)+'</span>':'')+'</span><span class="dd">'+esc(i.date)+'</span>'+(i.parent?'<div class="dp">↳ '+keyLink(i.parent)+' '+esc(i.parentTitle)+'</div>':'')+'</div>'; }).join('')+'</div>'; }).join('');
+  }
+  function renderDone(){
+    var d=get('jira.done'); if(!d) return errBox(labelsFor('jira.done'))+empty('No done record yet.');
+    var it=(d.items||[]).filter(function(i){return !i.cancelled;}), now=new Date(), qs=new Date(now.getFullYear(),Math.floor(now.getMonth()/3)*3,1).toISOString().slice(0,10);
+    var b=function(v,l){ return '<button class="'+(DONE_P===v?'on':'')+'" data-p="'+v+'">'+l+'</button>'; };
+    return errBox(labelsFor('jira.done'))+head('Done','Everything I\'ve finished. Boards hide done work quickly; this keeps it. It\'s also saved to the <b>Done Log</b> tab in the Sheet, which is never cleared.')
+      + '<div class="stats">'+stat(it.length,'Done in total','since records began','primary')+stat(it.filter(function(i){return i.date>=qs;}).length,'This quarter','','a2')+stat(doneInRange(30),'Last 30 days','','good')+'</div>'
+      + '<div class="toolbar"><div class="rangesel" id="donep" style="margin:0">'+b('q','This quarter')+b('90','3 months')+b('180','6 months')+b('all','All')+'</div><input class="dsearch" id="dq" type="search" placeholder="Search key, title, parent…" value="'+esc(DONE_Q)+'"><label style="font-size:12.5px;color:var(--muted)"><input type="checkbox" id="dx"'+(DONE_X?' checked':'')+'> show cancelled ('+(d.cancelled||0)+')</label></div><div id="dlist">'+doneList()+'</div>';
+  }
+  function bindDone(){ var p=document.getElementById('donep'); if(p) p.querySelectorAll('button').forEach(function(b){ b.onclick=function(){ DONE_P=b.dataset.p; showTab('done'); }; });
+    var q=document.getElementById('dq'); if(q) q.oninput=function(){ DONE_Q=q.value; document.getElementById('dlist').innerHTML=doneList(); };
+    var x=document.getElementById('dx'); if(x) x.onchange=function(){ DONE_X=x.checked; document.getElementById('dlist').innerHTML=doneList(); }; }
+
+  // ---------------- Slack / GitHub / Comms / Custom ----------------
+  function renderSlack(){
+    var s=get('slack'); if(!s) return errBox(['Slack'])+empty('No Slack data yet.');
+    var ch=(s.channels||[]).map(function(c){ return '<div class="kv"><span>'+esc(c.name)+'</span><b>'+c.mine+' of '+c.threads+' requests</b></div>'; }).join('');
+    return errBox(['Slack'])+head('Slack','Last '+s.windowDays+' days. Help requests where I replied (my own questions are excluded).')
+      + '<div class="stats">'+stat(s.myThreads,'Threads I answered','of '+s.humanAnswered+' with a human reply','primary')+stat(s.mySharePct+'%','My share of human support','','a2')+stat(s.myTtfrMin!=null?s.myTtfrMin+' min':'–','My median first response','','good')+stat(s.firstHuman,'First to answer','','a1')+'</div>'
+      + '<div class="panel"><div class="kv"><span>Marked ✅ resolved</span><b>'+s.myResolved+'</b></div>'+ch+(s.capped?'<div class="note">Thread-read cap reached; some threads not inspected.</div>':'')+'</div>';
+  }
+  function renderGitHub(){
+    var g=get('github'); if(!g) return errBox(['GitHub'])+empty('No GitHub data yet.');
+    var r=g.byRange[RANGE]||{}, p=r.prev||{};
+    var list=function(items,emptyMsg){ return (items||[]).length?tableP(['Title','Repo','#Age'],items.map(function(i){ return '<tr><td>'+ext(i.url,i.title)+'</td><td><span class="otype">'+esc(i.repo)+' #'+i.number+'</span></td><td class="num">'+i.ageDays+'d</td></tr>'; }).join('')):empty(emptyMsg); };
+    return errBox(['GitHub'])+head('GitHub','Signed in as '+esc(g.login)+'.')+rangeSelector()
+      + '<div class="stats">'+stat(r.opened,'PRs opened',dlt(r.opened,p.opened,null),'primary')+stat(r.merged,'PRs merged',dlt(r.merged,p.merged,true),'a2')+stat(r.reviewed,'PRs reviewed',dlt(r.reviewed,p.reviewed,true),'good')+stat((g.awaitingReview||[]).length,'Waiting on my review','','warn')+'</div>'
+      + sub('Waiting on my review')+list(g.awaitingReview,'Nobody is waiting on you.')+sub('My open PRs')+list(g.myOpenPrs,'No open PRs.')+sub('Issues assigned to me')+list(g.assignedIssues,'No open issues.');
+  }
+  function renderComms(){
+    var m=get('mail'), c=get('calendar'), out=errBox(['Gmail','Google Calendar','Outlook mail','Outlook calendar'])+head('Email & calendar','Email metadata only: no message content is read or stored.');
+    if(m){ var sr=(m.sent||{})[RANGE]||{};
+      var rows=(m.awaiting||[]).map(function(a){ return '<tr><td>'+esc(a.from)+'</td><td>'+(a.link?ext(a.link,a.subject||'(no subject)'):esc(a.subject))+'</td><td class="num">'+a.ageDays+'d</td></tr>'; }).join('');
+      out+=rangeSelector('Applies to sent volume.')+'<div class="stats">'+stat(sr.cur!=null?sr.cur:'–','Emails sent',dlt(sr.cur,sr.prev,null),'primary')+stat(m.awaitingCount,'Awaiting my reply','last '+m.awaitingDays+' days',m.awaitingCount?'warn':'good')+'</div>'
+        +sub('Awaiting my reply ('+esc(m.provider)+')')+(rows?tableP(['From','Subject','#Waiting'],rows,'Conversations where the last message isn\'t from you (automated senders filtered). A guide, not a to-do list.'):empty('Nothing waiting on you.')); }
+    if(c){ var w=c.thisWeek||{}, n=c.nextWeek||{}, t=(c.today||[]).map(function(x){ return '<div class="kv"><span>'+esc(x.title)+'</span><b>'+esc(x.time)+'</b></div>'; }).join('')||empty('No more meetings today.');
+      out+=sub('Calendar ('+esc(c.provider)+')')+'<div class="stats">'+stat(w.meetings,'Meetings this week',w.meetingHours+'h · '+w.loadPct+'%','a1')+stat(w.focusHours+'h','Free this week','outside meetings','good')+stat(n.meetings,'Meetings next week',n.meetingHours+'h · '+n.loadPct+'%','primary')+'</div><div class="panel"><h2 style="font-size:15px">Today (as of refresh)</h2>'+t+'</div>'; }
+    return out;
+  }
+  function renderCustom(id){
+    var x=(DATA.custom||{})[id], lbl=((DATA.sections||[]).filter(function(s){return s.path==='custom.'+id;})[0]||{}).label||id;
+    if(!x) return errBox([lbl])+empty('No data yet.');
+    var cell=function(v){ return (v&&typeof v==='object')?(v.url?ext(v.url,v.text):esc(v.text)):esc(v); };
+    return errBox([lbl])+head(esc(x.title||lbl),x.lead?esc(x.lead):'')
+      + ((x.headline||[]).length?'<div class="stats">'+x.headline.map(function(h){ return stat(esc(h.value),esc(h.label),esc(h.hint||''),h.tone||'primary'); }).join('')+'</div>':'')
+      + (x.tables||[]).map(function(t){ return sub(esc(t.title||''))+((t.rows||[]).length?tableP(t.columns||[],t.rows.map(function(r){ return '<tr>'+r.map(function(v){ return '<td>'+cell(v)+'</td>'; }).join('')+'</tr>'; }).join('')):empty('Nothing to show.')); }).join('')
+      + (x.note?'<div class="note">'+esc(x.note)+'</div>':'');
+  }
+
+  // ---------------- shell ----------------
+  function tabs(){
+    var t=[{id:'overview',name:'Overview'}];
+    if(enabled('jira.helpdesk')) t.push({id:'service',name:'Service desk'});
+    if(enabled('jira.queue')) t.push({id:'queue',name:'My queue'});
+    if(enabled('jira.involved')) t.push({id:'involved',name:'Involved'});
+    if(enabled('jira.projects')) t.push({id:'projects',name:'Projects'});
+    if(enabled('jira.done')) t.push({id:'done',name:'Done'});
+    if(enabled('github')) t.push({id:'github',name:'GitHub'});
+    if(enabled('slack')) t.push({id:'slack',name:'Slack'});
+    if(enabled('mail')||enabled('calendar')) t.push({id:'comms',name:'Email & calendar'});
+    (DATA.sections||[]).filter(function(s){ return s.path.indexOf('custom.')===0; }).forEach(function(s){ t.push({id:s.path,name:s.label}); });
+    return t;
+  }
+  var RENDER={overview:renderOverview,service:renderService,queue:renderQueue,involved:renderInvolved,projects:renderProjects,done:renderDone,github:renderGitHub,slack:renderSlack,comms:renderComms};
+  function showTab(id){
+    if(!tabs().some(function(t){return t.id===id;})) id='overview';
+    CURTAB=id; document.getElementById('mainview').innerHTML=(id.indexOf('custom.')===0?renderCustom(id.slice(7)):RENDER[id]());
+    if(id==='projects') bindQuarters(); if(id==='done') bindDone(); bindRange(id);
+    document.querySelectorAll('#maintabs .mtab').forEach(function(x){ x.classList.toggle('on',x.dataset.id===id); });
+  }
+  function renderMainTabs(){ var el=document.getElementById('maintabs'); el.innerHTML=tabs().map(function(x){ return '<button class="mtab" data-id="'+esc(x.id)+'">'+esc(x.name)+'</button>'; }).join(''); el.querySelectorAll('.mtab').forEach(function(b){ b.onclick=function(){ showTab(b.dataset.id); }; }); }
+  function applySnapshot(m,key){ DATA=m; RANGE=String(DATA.defaultRange||'14'); document.getElementById('upd').textContent=DATA.updated||key; renderMainTabs(); showTab(CURTAB); }
+  function snapBarInit(){
+    var sel=document.getElementById('snap');
+    sel.innerHTML='<option value="live">Live (latest)</option>'+HISTORY.slice().reverse().map(function(h){ return '<option value="'+esc(h.date)+'">'+esc(h.date)+'</option>'; }).join('');
+    sel.onchange=function(){ var key=sel.value, upd=document.getElementById('upd');
+      if(MODELS[key]){ applySnapshot(MODELS[key],key); return; }
+      if(typeof google==='undefined'||!google.script){ upd.textContent='history only available in the live app'; return; }
+      upd.textContent='loading '+key+'…'; sel.disabled=true;
+      google.script.run.withSuccessHandler(function(json){ sel.disabled=false; var m=null; try{ m=JSON.parse(json||''); }catch(e){} if(!m){ upd.textContent='could not load '+key; return; } MODELS[key]=m; applySnapshot(m,key); })
+        .withFailureHandler(function(){ sel.disabled=false; upd.textContent='error loading '+key; }).getSnapshotModel(key); };
+    document.getElementById('upd').textContent=CURRENT.updated||'–';
+  }
+  function themeInit(){
+    var btn=document.getElementById('themebtn'), root=document.documentElement, KEY='mwd-theme';
+    if(BRAND.mode!=='auto'){ btn.style.display='none'; return; }
+    var cur=''; try{ cur=localStorage.getItem(KEY)||''; }catch(e){}
+    if(cur) root.setAttribute('data-theme',cur);
+    btn.onclick=function(){ var dark=root.getAttribute('data-theme')==='dark'||(!root.getAttribute('data-theme')&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);
+      var next=dark?'light':'dark'; root.setAttribute('data-theme',next); try{ localStorage.setItem(KEY,next); }catch(e){} };
+  }
+  function downloadHTML(){
+    try{ var url=URL.createObjectURL(new Blob(['<!doctype html>\n'+document.documentElement.outerHTML],{type:'text/html;charset=utf-8'}));
+      var a=document.createElement('a'); a.href=url; a.download='my-work-'+String(DATA.updated||'export').replace(/[^0-9A-Za-z]+/g,'-')+'.html'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); },1500);
+    }catch(e){ alert('Use your browser menu ▸ Save Page As.'); }
+  }
+  document.getElementById('title').textContent=BRAND.title||'My Work';
+  document.getElementById('subtitle').textContent=BRAND.subtitle||'';
+  document.getElementById('foot-l').textContent=BRAND.footer||'';
+  if(BRAND.logoBoxed) document.getElementById('logo').classList.add('boxed');
+  themeInit(); snapBarInit(); renderMainTabs(); showTab('overview');
+</script>
+</body></html>

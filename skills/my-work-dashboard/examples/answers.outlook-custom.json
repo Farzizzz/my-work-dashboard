@@ -1,0 +1,4 @@
+{ "owner": { "name": "Jo Banks" }, "timezone": "Australia/Sydney",
+  "sources": { "outlook": { "enabled": true, "tenant": "organizations" },
+               "custom": [{ "id": "servicenow", "name": "ServiceNow", "secrets": ["SN_INSTANCE", "SN_TOKEN"] }] },
+  "theme": { "preset": "mono", "mode": "dark", "logo": { "type": "svg", "value": "<svg viewBox='0 0 10 10' onload='alert(1)'><script>alert(1)</script><circle cx='5' cy='5' r='4'/></svg>" } } }

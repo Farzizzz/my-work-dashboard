@@ -1,0 +1,3 @@
+{ "owner": { "name": "Sam Lee" }, "timezone": "America/New_York",
+  "sources": { "gmail": { "enabled": true }, "gcal": { "enabled": true } },
+  "theme": { "preset": "forest", "mode": "light" } }

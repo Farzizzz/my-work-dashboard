@@ -1,0 +1,11 @@
+{
+  "name": "my-work-dashboard",
+  "version": "1.0.0",
+  "description": "Build your own private 'My Work' dashboard in Google Apps Script. Claude asks which tools you use (Jira, Slack, GitHub, Gmail/Google Calendar, Outlook, or anything with an API) and how you want it to look, then builds, deploys and schedules it. Includes a permanent record of everything you've finished.",
+  "author": { "name": "Farz Owasil", "url": "https://github.com/Farzizzz" },
+  "homepage": "https://github.com/Farzizzz/my-work-dashboard",
+  "repository": "https://github.com/Farzizzz/my-work-dashboard",
+  "license": "MIT",
+  "keywords": ["claude-skill", "claude-code", "dashboard", "productivity", "apps-script", "clasp", "jira", "slack", "github", "gmail", "google-calendar", "outlook", "microsoft-graph", "personal-metrics"],
+  "skills": "./skills/"
+}

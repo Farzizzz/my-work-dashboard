@@ -1,0 +1,18 @@
+{
+  "name": "my-work-dashboard",
+  "owner": { "name": "Farz Owasil", "url": "https://github.com/Farzizzz" },
+  "metadata": { "description": "Personal work dashboard builder for Claude Code", "version": "1.0.0" },
+  "plugins": [
+    {
+      "name": "my-work-dashboard",
+      "source": "./",
+      "description": "Interview-driven builder for a private personal work dashboard (Google Apps Script): Jira, Slack, GitHub, Gmail/Calendar, Outlook and custom APIs, with your own colours.",
+      "version": "1.0.0",
+      "author": { "name": "Farz Owasil", "url": "https://github.com/Farzizzz" },
+      "license": "MIT",
+      "category": "productivity",
+      "keywords": ["dashboard", "productivity", "apps-script", "jira", "slack", "github", "gmail", "outlook"],
+      "skills": "./skills/"
+    }
+  ]
+}
